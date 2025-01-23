@@ -38,7 +38,6 @@ public class ShadowedVariablesAnalyzerRule implements AnalyzerRule {
         return methods
                 .stream()
                 .flatMap(method -> method.findAll(VariableDeclarator.class).stream())
-                .filter(methodVar -> classVars.containsKey(methodVar.getNameAsString()))
                 .map(methodVar -> {
                     VariableDeclarator classVar = classVars.get(methodVar.getNameAsString());
                     return classVar == null ? null : analyzerDefect(methodVar, classVar, classDeclaration);

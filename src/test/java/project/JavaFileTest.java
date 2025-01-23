@@ -33,7 +33,7 @@ class JavaFileTest {
     @Test
     public void shouldReturnAst() {
         Path path = Paths.get("some/path");
-        CompilationUnit ast = Util.readJavaAstFromResource("/CorrectClass.java");
+        CompilationUnit ast = Util.readJavaAstFromResource("/common/CorrectClass.java");
 
         JavaFile javaFile = new JavaFile(path, ast);
 
@@ -43,7 +43,7 @@ class JavaFileTest {
     @Test
     public void shouldBeCorrectlyParsed() {
         Path path = Paths.get("some/path");
-        CompilationUnit ast = Util.readJavaAstFromResource("/CorrectClass.java");
+        CompilationUnit ast = Util.readJavaAstFromResource("/common/CorrectClass.java");
 
         JavaFile javaFile = new JavaFile(path, ast);
 

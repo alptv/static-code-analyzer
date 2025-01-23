@@ -46,7 +46,7 @@ class ProjectDefectsReporterTest {
 
         String expectedReport =
                 "Processing source code in: project/path\n" +
-                        "No defects found\n";
+                "No defects found\n";
         assertThat(stringWriter.toString()).isEqualTo(expectedReport);
     }
 

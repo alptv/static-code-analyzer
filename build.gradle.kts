@@ -1,5 +1,6 @@
 plugins {
     application
+    jacoco
 }
 
 repositories {
@@ -18,6 +19,7 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
 }
 
 tasks.jar {
@@ -28,4 +30,8 @@ tasks.jar {
         .map(::zipTree)
     from(dependencies)
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
 }

@@ -4,10 +4,9 @@ import analyzer.AnalyzerDefect;
 import project.Project;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.io.Writer;
-import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProjectDefectsReporter {
     private final Project project;
@@ -19,14 +18,19 @@ public class ProjectDefectsReporter {
     }
 
     public void report(List<AnalyzerDefect> projectDefects) throws IOException {
+        List<String> sortedDefectMessages = projectDefects
+                .stream()
+                .map(AnalyzerDefect::getMessage)
+                .sorted()
+                .collect(Collectors.toList());
         writeln("Processing source code in: " + project.getProjectPath());
         if (projectDefects.isEmpty()) {
             writeln("No defects found");
             return;
         }
         writeln("Found following defects:");
-        for (AnalyzerDefect defect : projectDefects) {
-            writeln(defect.getMessage());
+        for (String defect : sortedDefectMessages) {
+            writeln(defect);
         }
     }
 

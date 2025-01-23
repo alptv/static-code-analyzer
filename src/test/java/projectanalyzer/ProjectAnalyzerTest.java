@@ -29,7 +29,7 @@ class ProjectAnalyzerTest {
                         ),
                         new JavaFile(
                                 Paths.get("dir/CorrectClass.java"),
-                                readJavaAstFromResource("/CorrectClass.java")
+                                readJavaAstFromResource("/common/CorrectClass.java")
                         )
                 )
         );

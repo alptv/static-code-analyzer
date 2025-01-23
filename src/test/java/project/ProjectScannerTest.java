@@ -1,68 +1,57 @@
 package project;
 
-import com.github.javaparser.ast.CompilationUnit;
 import org.junit.jupiter.api.Test;
-import utils.Util;
 
+import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static utils.Util.readJavaAstFromResource;
 import static utils.Util.resourcePath;
 
 class ProjectScannerTest {
 
     @Test
-    public void shouldScanDirectoryProject() {
+    public void shouldScanDirectoryProject() throws IOException {
         ProjectScanner projectScanner = new ProjectScanner();
 
-        Project project = projectScanner.scanProject(resourcePath("/"));
+        Project project = projectScanner.scanProject(resourcePath("/project"));
 
         assertThat(project)
                 .usingRecursiveComparison()
                 .ignoringFields("javaFiles.ast.storage")
                 .isEqualTo(
                         new Project(
-                                resourcePath("/"),
+                                resourcePath("/project"),
                                 asList(
                                         new JavaFile(
-                                                Paths.get("ShadowedVariableInNestedClass.java"),
-                                                readJavaAstFromResource("/ShadowedVariableInNestedClass.java")
-                                        ),
-                                        new JavaFile(
                                                 Paths.get("CorrectClass.java"),
-                                                readJavaAstFromResource("/CorrectClass.java")
+                                                readJavaAstFromResource("/project/CorrectClass.java")
                                         ),
-                                        new JavaFile(
-                                                Paths.get("ShadowedVariableClass.java"),
-                                                readJavaAstFromResource("/ShadowedVariableClass.java")
-                                        )
+                                        new JavaFile(Paths.get("SyntaxErrorClass.java"))
                                 )
                         )
                 );
     }
 
     @Test
-    public void shouldScanSingleFile() {
+    public void shouldScanSingleFile() throws IOException {
         ProjectScanner projectScanner = new ProjectScanner();
 
-        Project project = projectScanner.scanProject(resourcePath("/CorrectClass.java"));
+        Project project = projectScanner.scanProject(resourcePath("/common/CorrectClass.java"));
 
         assertThat(project)
                 .usingRecursiveComparison()
                 .ignoringFields("javaFiles.ast.storage")
                 .isEqualTo(
                         new Project(
-                                resourcePath("/CorrectClass.java"),
+                                resourcePath("/common/CorrectClass.java"),
                                 singletonList(
                                         new JavaFile(
-                                                resourcePath("/CorrectClass.java"),
-                                                readJavaAstFromResource("/CorrectClass.java")
+                                                resourcePath("/common/CorrectClass.java"),
+                                                readJavaAstFromResource("/common/CorrectClass.java")
                                         )
                                 )
                         )
