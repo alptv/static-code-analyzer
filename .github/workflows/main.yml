@@ -9,6 +9,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
     steps:
     
       - name: Add checkout action 
