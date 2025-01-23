@@ -1,0 +1,48 @@
+name: Statyc analyzer build
+
+on: 
+  push:
+    branches:
+      - '**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+    
+      - name: Add checkout action 
+        uses: actions/checkout@v2
+        
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.0.0
+        with:
+          java-version: '11'
+          distribution: adopt
+          
+      - name: Build and test
+        working-directory: ./
+        run: sudo ./gradlew build
+
+      - name: Create jar
+        working-directory: ./
+        run: sudo ./gradlew jar
+        
+      - name: Run analyzer on main
+        run: java -jar ./build/libs/static-code-analyzer.jar -s "./src/main/java"
+        
+      - name: Run analyzer on test
+        run: java -jar ./build/libs/static-code-analyzer.jar -s "./src/test/java"
+        
+      - name: JaCoCo Code Coverage Report
+        id: jacoco_reporter
+        uses: PavanMudigonda/jacoco-reporter@v5.0
+        with:
+          coverage_results_path: ./build/reports/jacocoTestReport.xml
+          coverage_report_name: Coverage
+          coverage_report_title: JaCoCo
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          skip_check_run: false
+          minimum_coverage: 80
+          fail_below_threshold: false
+          publish_only_summary: false
